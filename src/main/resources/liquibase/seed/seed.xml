@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="insert_data_users" author="trungnn">
+        <sqlFile encoding="utf-8" relativeToChangelogFile="true" path="users_seeder.sql" />
+    </changeSet>
+
+    <changeSet id="insert_data_roles" author="trungnn">
+        <sqlFile encoding="utf-8" relativeToChangelogFile="true" path="roles_seeder.sql" />
+    </changeSet>
+
+    <changeSet id="insert_data_user_role" author="trungnn">
+        <sqlFile encoding="utf-8" relativeToChangelogFile="true" path="user_role_seeder.sql" />
+    </changeSet>
+
+</databaseChangeLog>
