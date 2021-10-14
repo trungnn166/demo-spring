@@ -1,7 +1,10 @@
 package com.nnt.demo.api;
 
+import com.nnt.demo.config.AppProperties;
 import com.nnt.demo.entities.User;
 import com.nnt.demo.model.JwtResponse;
+import com.nnt.demo.request.LoginRequest;
+import com.nnt.demo.response.Response;
 import com.nnt.demo.services.UserService;
 import com.nnt.demo.services.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +14,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -28,24 +34,36 @@ public class AuthApi {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AppProperties appProperties;
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtService.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User currentUser = userService.findByEmail(user.getEmail()).get();
+        User currentUser = userService.findByEmail(loginRequest.getEmail()).get();
         return ResponseEntity.ok(new JwtResponse(token, currentUser, userDetails.getAuthorities()));
     }
 
-    @GetMapping("/get-user-by-token")
-    public ResponseEntity<?> getUserByToken(Authentication authentication) {
+    @GetMapping("/me")
+    public ResponseEntity<?> me(Authentication authentication) {
         String email = authentication.getName();
         Optional<User> user = userService.findByEmail(email);
         return ResponseEntity.ok(user);
 
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Response> logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        return ResponseEntity.ok(Response.ofNoContent());
     }
 }

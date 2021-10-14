@@ -1,5 +1,6 @@
 package com.nnt.demo.services.impl;
 
+import com.nnt.demo.config.AppProperties;
 import com.nnt.demo.entities.User;
 import com.nnt.demo.model.UserPrincipal;
 import com.nnt.demo.services.UserService;
@@ -20,21 +21,24 @@ public class JwtService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AppProperties appProperties;
+
     public String generateToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + EXPIRE_TIME * 1000))
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .setExpiration(new Date((new Date()).getTime() + appProperties.getAuth().getTokenExpirationSec() * 1000))
+                .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                 .compact();
     }
 
     public String getEmailFromJwtToken(String token) {
 
         String email = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(appProperties.getAuth().getTokenSecret())
                 .parseClaimsJws(token)
                 .getBody().getSubject();
         return email;
@@ -48,13 +52,9 @@ public class JwtService {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
             return true;
-        } catch (SignatureException e) {
-        } catch (MalformedJwtException e) {
-        } catch (ExpiredJwtException e) {
-        } catch (UnsupportedJwtException e) {
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
         }
 
         return false;

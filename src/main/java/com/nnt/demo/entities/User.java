@@ -1,6 +1,7 @@
 package com.nnt.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.nnt.demo.common.Provider;
 import lombok.Data;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,7 +35,8 @@ public class User {
     private String imageUrl;
 
     @Column(name = "provider")
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     @Column(name = "provider_id")
     private String providerId;

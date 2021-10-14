@@ -6,7 +6,39 @@
 spring:
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/demo_spring
+        url: jdbc:mysql://127.0.0.1:3306/demo_spring?useSSL=false&serverTimezone=Asia/Tokyo&useLegacyDatetimeCode=false
         username: root
-        password:
+        password: ngoctrung166
+
     liquibase.enabled: false
+
+    jpa:
+        show-sql: true
+
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        clientId: 636000140099-q0ndjmniti718kurnmos33aev1cd4hqu.apps.googleusercontent.com
+                        clientSecret: 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
+                        redirectUri: http://localhost:8090/oauth2/callback/
+                        scope:
+                            - email
+                            - profile
+
+server:
+    port: 8090
+
+app:
+    auth:
+        tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+        tokenExpirationSec: 86400
+    oauth2:
+        authorizedRedirectUris:
+            - http://localhost:8080/oauth2/redirect
+            - myandroidapp://oauth2/redirect
+            - myiosapp://oauth2/redirect
+    client:
+        url: http://localhost:8080
+        jwtToken: jwt_token

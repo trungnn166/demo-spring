@@ -1,4 +1,4 @@
-package com.nnt.demo.config;
+package com.nnt.demo.security;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

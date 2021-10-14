@@ -23,10 +23,9 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
-    implementation 'org.liquibase:liquibase-core'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
@@ -48,6 +47,9 @@ dependencies {
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.3'
 
+    //oauth2
+    implementation 'org.springframework.security:spring-security-oauth2-client'
+
 
 }
 
@@ -62,7 +64,7 @@ liquibase {
             changeLogFile 'src/main/resources/liquibase/liquibase-changeLog.xml'
             url 'jdbc:mysql://localhost:3306/demo_spring'
             username 'root'
-            password ''
+            password 'ngoctrung166'
         }
     }
 }

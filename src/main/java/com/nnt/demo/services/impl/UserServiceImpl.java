@@ -52,6 +52,16 @@ public class UserServiceImpl implements UserService {
         if (!user.isPresent()) {
             throw new UsernameNotFoundException(email);
         }
-        return UserPrincipal.build(user.get());
+
+        return UserPrincipal.create(user.get());
     }
+
+    public UserDetails loadUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UsernameNotFoundException(id.toString())
+        );
+
+        return UserPrincipal.create(user);
+    }
+    
 }
