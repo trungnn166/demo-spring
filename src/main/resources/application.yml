@@ -1,12 +1,7 @@
-
-# ===============================
-# DATABASE
-# ===============================
-
 spring:
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/demo_spring?useSSL=false&serverTimezone=Asia/Tokyo&useLegacyDatetimeCode=false
+        url: jdbc:mysql://127.0.0.1:3307/demo_spring?useSSL=false&serverTimezone=Asia/Tokyo&useLegacyDatetimeCode=false
         username: root
         password: ngoctrung166
 
@@ -42,3 +37,11 @@ app:
     client:
         url: http://localhost:8080
         jwtToken: jwt_token
+
+
+config:
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: trungnn160697@gmail.com
+        password: ngoctrunghedspi

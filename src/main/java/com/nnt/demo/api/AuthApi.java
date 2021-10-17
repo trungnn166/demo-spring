@@ -6,6 +6,7 @@ import com.nnt.demo.model.JwtResponse;
 import com.nnt.demo.request.LoginRequest;
 import com.nnt.demo.response.Response;
 import com.nnt.demo.services.UserService;
+import com.nnt.demo.services.impl.EmailService;
 import com.nnt.demo.services.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,9 @@ public class AuthApi {
     @Autowired
     private AppProperties appProperties;
 
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -64,6 +68,11 @@ public class AuthApi {
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
+        return ResponseEntity.ok(Response.ofNoContent());
+    }
+
+    @GetMapping("/reset-password")
+    public ResponseEntity<Response> resetPassword(@RequestParam("email") String email) {
         return ResponseEntity.ok(Response.ofNoContent());
     }
 }

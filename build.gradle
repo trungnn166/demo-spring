@@ -50,6 +50,12 @@ dependencies {
     //oauth2
     implementation 'org.springframework.security:spring-security-oauth2-client'
 
+    //send mail
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.2.0.RELEASE'
+
+    //thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 
 }
 
@@ -62,7 +68,7 @@ liquibase {
     activities {
         main {
             changeLogFile 'src/main/resources/liquibase/liquibase-changeLog.xml'
-            url 'jdbc:mysql://localhost:3306/demo_spring'
+            url 'jdbc:mysql://localhost:3307/demo_spring?useSSL=false&serverTimezone=Asia/Tokyo&useLegacyDatetimeCode=false'
             username 'root'
             password 'ngoctrung166'
         }
