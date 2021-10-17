@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS reset_password;
+
+CREATE TABLE reset_password (
+   id BIGINT PRIMARY KEY AUTO_INCREMENT,
+   email VARCHAR(255) NOT NULL,
+   token TEXT NOT NULL,
+   is_expired BIT(1) NOT NULL DEFAULT 0,
+   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+   deleted_at TIMESTAMP NULL DEFAULT NULL
+);

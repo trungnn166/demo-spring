@@ -1,7 +1,7 @@
 spring:
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3307/demo_spring?useSSL=false&serverTimezone=Asia/Tokyo&useLegacyDatetimeCode=false
+        url: jdbc:mysql://127.0.0.1:3306/demo_spring?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Tokyo&useLegacyDatetimeCode=false
         username: root
         password: ngoctrung166
 
@@ -43,5 +43,5 @@ config:
     mail:
         host: smtp.gmail.com
         port: 587
-        username: trungnn160697@gmail.com
-        password: ngoctrunghedspi
+        username: trungnn160697.dev@gmail.com
+        password: ngoctrung166

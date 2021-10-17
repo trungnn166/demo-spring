@@ -1,8 +1,10 @@
 package com.nnt.demo.services.impl;
 
+import com.nnt.demo.common.MethodUtils;
 import com.nnt.demo.model.EmailModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
 import javax.mail.*;
@@ -10,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+@Service
 public class EmailService {
     private static final String CONTENT_TYPE_TEXT_HTML = "text/html;charset=\"utf-8\"";
 
@@ -23,7 +26,10 @@ public class EmailService {
     private String password;
 
     @Autowired
-    EmailTemplateService emailTemplateService;
+    private EmailTemplateService emailTemplateService;
+
+    @Autowired
+    private MethodUtils methodUtils;
 
     public void sendMail(EmailModel emailModel) {
         Properties props = new Properties();
@@ -31,6 +37,8 @@ public class EmailService {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", this.port);
+        props.put("protocol", "smtp");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
@@ -52,7 +60,9 @@ public class EmailService {
         }
     }
 
-    public void sendMail(String email, String subject, String template) {
-        sendMail(new EmailModel(email, subject, template, new Context()));
+    public void sendMailResetPassword(String email) {
+        Context context = new Context();
+        context.setVariable("url", methodUtils.generateUrlResetPassword());
+        sendMail(new EmailModel(email, "パスワードを再設定します。", "reset-password", context));
     }
 }

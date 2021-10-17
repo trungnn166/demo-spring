@@ -2,15 +2,17 @@ package com.nnt.demo.services.impl;
 
 import com.nnt.demo.model.EmailModel;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+@Service
 public class EmailTemplateService {
     private static final String MAIL_TEMPLATE_BASE_NAME = "mail/MailMessages";
-    private static final String MAIL_TEMPLATE_PREFIX = "/templates/email/";
+    private static final String MAIL_TEMPLATE_PREFIX = "/templates/";
     private static final String MAIL_TEMPLATE_SUFFIX = ".html";
     private static final String UTF_8 = "UTF-8";
     private static TemplateEngine templateEngine;

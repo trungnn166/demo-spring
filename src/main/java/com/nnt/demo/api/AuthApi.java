@@ -71,8 +71,4 @@ public class AuthApi {
         return ResponseEntity.ok(Response.ofNoContent());
     }
 
-    @GetMapping("/reset-password")
-    public ResponseEntity<Response> resetPassword(@RequestParam("email") String email) {
-        return ResponseEntity.ok(Response.ofNoContent());
-    }
 }

@@ -56,6 +56,11 @@ dependencies {
     //thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+    // validation
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.4'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
 }
 
@@ -68,7 +73,7 @@ liquibase {
     activities {
         main {
             changeLogFile 'src/main/resources/liquibase/liquibase-changeLog.xml'
-            url 'jdbc:mysql://localhost:3307/demo_spring?useSSL=false&serverTimezone=Asia/Tokyo&useLegacyDatetimeCode=false'
+            url 'jdbc:mysql://localhost:3306/demo_spring?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Tokyo&useLegacyDatetimeCode=false'
             username 'root'
             password 'ngoctrung166'
         }
