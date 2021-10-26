@@ -2,6 +2,7 @@ package com.nnt.demo.services.impl;
 
 import com.nnt.demo.common.MethodUtils;
 import com.nnt.demo.model.EmailModel;
+import com.nnt.demo.services.ResetPasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class EmailService {
 
     @Autowired
     private MethodUtils methodUtils;
+
+    @Autowired
+    private ResetPasswordService resetPasswordService;
 
     public void sendMail(EmailModel emailModel) {
         Properties props = new Properties();
@@ -62,7 +66,9 @@ public class EmailService {
 
     public void sendMailResetPassword(String email) {
         Context context = new Context();
-        context.setVariable("url", methodUtils.generateUrlResetPassword());
+        String token = methodUtils.generateUrlResetPassword();
+        resetPasswordService.create(email, token);
+        context.setVariable("url", token);
         sendMail(new EmailModel(email, "パスワードを再設定します。", "reset-password", context));
     }
 }

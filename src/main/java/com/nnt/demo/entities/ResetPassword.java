@@ -1,8 +1,8 @@
 package com.nnt.demo.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "reset_password")
 @Where(clause = "deleted_at is null")
 @Data
+@NoArgsConstructor
 public class ResetPassword {
     @Id
     @Column(name = "id")
@@ -27,13 +28,21 @@ public class ResetPassword {
 
     @Column(name = "token")
     @NotBlank
-    @UniqueElements
     private String token;
 
     @Column(name = "is_expired")
-    private Boolean isExpired;
+    private Boolean isExpired = false;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    public ResetPassword(String email, String token) {
+        this.email = email;
+        this.token = token;
+        this.createdAt = LocalDateTime.now();
+    }
 }

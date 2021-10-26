@@ -1,14 +1,14 @@
 package com.nnt.demo.api;
 
-import com.nnt.demo.config.AppProperties;
 import com.nnt.demo.entities.User;
 import com.nnt.demo.model.JwtResponse;
-import com.nnt.demo.request.LoginRequest;
+import com.nnt.demo.request.AuthRequest;
 import com.nnt.demo.response.Response;
 import com.nnt.demo.services.UserService;
 import com.nnt.demo.services.impl.EmailService;
 import com.nnt.demo.services.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,13 +36,11 @@ public class AuthApi {
     private UserService userService;
 
     @Autowired
-    private AppProperties appProperties;
-
-    @Autowired
     private EmailService emailService;
 
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody AuthRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -68,6 +66,16 @@ public class AuthApi {
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
+        return ResponseEntity.ok(Response.ofNoContent());
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Response> requestResetPassword(@RequestBody AuthRequest authRequest) {
+        Optional user = userService.findByEmail(authRequest.getEmail());
+        if(user.isEmpty()) {
+            return ResponseEntity.ok(Response.ofError(HttpStatus.NOT_FOUND.value(), "Email not exits"));
+        }
+        emailService.sendMailResetPassword(authRequest.getEmail());
         return ResponseEntity.ok(Response.ofNoContent());
     }
 
