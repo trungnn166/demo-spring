@@ -66,9 +66,10 @@ public class EmailService {
 
     public void sendMailResetPassword(String email) {
         Context context = new Context();
-        String token = methodUtils.generateUrlResetPassword();
+        String token = methodUtils.createToken();
+        String url = methodUtils.generateUrlResetPassword(token);
         resetPasswordService.create(email, token);
-        context.setVariable("url", token);
+        context.setVariable("url", url);
         sendMail(new EmailModel(email, "パスワードを再設定します。", "reset-password", context));
     }
 }

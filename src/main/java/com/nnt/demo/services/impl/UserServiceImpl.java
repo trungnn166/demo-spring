@@ -1,8 +1,10 @@
 package com.nnt.demo.services.impl;
 
+import com.nnt.demo.common.MethodUtils;
 import com.nnt.demo.entities.User;
 import com.nnt.demo.model.UserPrincipal;
 import com.nnt.demo.repositories.UserRepository;
+import com.nnt.demo.services.ResetPasswordService;
 import com.nnt.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +18,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ResetPasswordService resetPasswordService;
+
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
 
     @Override
     public Iterable<User> findAll() {
@@ -40,6 +46,8 @@ public class UserServiceImpl implements UserService {
     public User update(User user) {
         return null;
     }
+
+
 
     @Override
     public void delete(Long id) {
@@ -63,5 +71,10 @@ public class UserServiceImpl implements UserService {
 
         return UserPrincipal.create(user);
     }
-    
+
+    @Override
+    public void updatePasswordByTokenResetPassword(String password, String token) {
+        resetPasswordService.delete(token);
+        userRepository.updatePasswordByTokenResetPassword(MethodUtils.encode(password), token);
+    }
 }

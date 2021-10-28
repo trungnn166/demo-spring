@@ -79,7 +79,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
 
         http.authorizeRequests()
-                .antMatchers("/api/auth/login", "/oauth/**",  "/api/auth/forgot-password").permitAll()
+                .antMatchers("/api/auth/login", "/oauth/**",
+                                        "/api/auth/forgot-password", "/api/auth/is-token-reset-password",
+                                        "/api/auth/reset-password")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).exceptionHandling()

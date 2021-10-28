@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface UserService extends BaseService<User>, UserDetailsService {
     Optional<User> findByEmail(String email);
+    void updatePasswordByTokenResetPassword(String password, String token);
 }

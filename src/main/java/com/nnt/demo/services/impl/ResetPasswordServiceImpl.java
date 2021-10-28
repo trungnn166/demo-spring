@@ -36,19 +36,35 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     public void delete(Long id) {
-        ResetPassword resetPassword = findById(id).orElseGet(null);
+
+    }
+
+    @Override
+    public void delete(String token) {
+        ResetPassword resetPassword = findByToken(token).orElseGet(null);
         if(resetPassword == null) return;
         resetPassword.setDeletedAt(LocalDateTime.now());
         resetPassword.setIsExpired(true);
         update(resetPassword);
     }
 
+    @Override
     public ResetPassword create(String email, String token) {
         if(resetPasswordRepository.existsByEmail(email)) {
             ResetPassword resetPasswordCurrent = resetPasswordRepository.findByEmail(email).get();
-            delete(resetPasswordCurrent.getId());
+            delete(resetPasswordCurrent.getToken());
         }
         ResetPassword resetPassword = new ResetPassword(email, token);
         return save(resetPassword);
+    }
+
+    @Override
+    public boolean existsByToken(String token) {
+        return resetPasswordRepository.existsByToken(token);
+    }
+
+    @Override
+    public Optional<ResetPassword> findByToken(String token) {
+        return resetPasswordRepository.findByToken(token);
     }
 }
